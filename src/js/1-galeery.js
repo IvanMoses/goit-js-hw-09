@@ -67,55 +67,28 @@ const images = [
   },
 ];
 
+const galleryContainer = document.querySelector('.gallery');
 
-document.addEventListener('DOMContentLoaded', () => {
-  const galleryContainer = document.querySelector('.gallery');
-  const galleryMarkup = createGalleryMarkup(images);
-  galleryContainer.innerHTML = galleryMarkup;
 
-  galleryContainer.addEventListener('click', onGalleryItemClick);
-});
+const galleryMarkup = images.map(({ preview, original, description }) => {
+  return `
+    <li class="gallery-item">
+      <a class="gallery-link" href="${original}">
+        <img
+          class="gallery-image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </li>`;
+}).join('');
 
-function createGalleryMarkup(images) {
-  return images
-    .map(({ preview, original, description }) => {
-      return `
-      <li class="gallery-item">
-	<a class="gallery-link" href="large-image.jpg">
-		<img 
-			class="gallery-image" 
-			src="small-image.jpg" 
-			alt="Image description" 
-			/>
-	</a>
-</li>`;
-    })
-    .join('');
-}
-
-//  function onGalleryItemClick(event) {
-//   event.preventDefault();
-  
-//   const isGalleryImage = event.target.classList.contains('gallery-image');
-  
-//   if (!isGalleryImage) {
-//     return;
-//   }
-  
-//   const originalImageUrl = event.target.dataset.source;
-//   openModal(originalImageUrl);
-// }
-
-// function openModal(imageUrl) {
-//     const instance = basicLightbox.create(`
-//     <img src="${imageUrl}" width="800" height="600">
-//   `);
-  
-//     instance.show();
-// }
-
+galleryContainer.innerHTML = galleryMarkup;
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
+
+
